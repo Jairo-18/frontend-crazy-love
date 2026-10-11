@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { connection } from 'next/server';
 import { getAccommodations, getProducts, getServices } from '@/lib/api';
 import { t } from '@/lib/format';
 import { EmptyState, ItemCard, ItemGrid } from './item-card';
@@ -6,6 +7,11 @@ import { EmptyState, ItemCard, ItemGrid } from './item-card';
 /**
  * Bloques de la portada: los primeros ítems de cada catálogo. Si el backend no
  * responde, el bloque dice que no hay nada en vez de tumbar la página.
+ *
+ * Cada bloque llama a `connection()`: se arma al atender la visita (con la
+ * caché de `api.ts`), no en el build. Así el build no necesita el backend; un
+ * error dentro de una función `'use cache'` durante el prerender tumba el build
+ * aunque aquí se capture.
  */
 function SectionTitle({ title, href }: { title: string; href: string }) {
   return (
@@ -19,6 +25,7 @@ function SectionTitle({ title, href }: { title: string; href: string }) {
 }
 
 export async function FeaturedAccommodations() {
+  await connection();
   const res = await getAccommodations({ perPage: 4 }).catch(() => null);
   const items = res?.data ?? [];
   return (
@@ -46,6 +53,7 @@ export async function FeaturedAccommodations() {
 }
 
 export async function FeaturedServices() {
+  await connection();
   const res = await getServices({ perPage: 4 }).catch(() => null);
   const items = res?.data ?? [];
   return (
@@ -72,6 +80,7 @@ export async function FeaturedServices() {
 }
 
 export async function FeaturedProducts() {
+  await connection();
   const res = await getProducts({ perPage: 4 }).catch(() => null);
   const items = res?.data ?? [];
   return (
