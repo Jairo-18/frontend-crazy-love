@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# La plantilla de variables sí se versiona.
+!.env.example
+
+# Graphify (grafo de conocimiento del codigo, regenerable con `graphify update src`)
+graphify-out/

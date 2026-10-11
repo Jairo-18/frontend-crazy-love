@@ -1,26 +1,30 @@
 @import "tailwindcss";
 
+/*
+ * Colores del sitio. Estos son los valores por defecto; el layout los
+ * sobrescribe con los de la marca del hotel (Aplicación → Apariencia en el panel
+ * de samawe) cuando el backend los tiene.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --brand: #be123c;
+  --brand-2: #fb7185;
+  --title: #1f1d24;
+  --text: #3f3b46;
+  --muted: #7a7482;
+  --surface: #ffffff;
+  --surface-2: #f6f3f5;
+  --page: #fbf9fa;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--page);
+  --color-foreground: var(--text);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--page);
+  color: var(--text);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
