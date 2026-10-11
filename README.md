@@ -17,8 +17,8 @@ Samawe.
 | `SAMAWE_API_URL` | Backend con host de Crazy Love. Local: `http://127.0.0.2:3000`. |
 | `SAMAWE_API_CLIENT_KEY` | Cabecera `X-Client-Key` del backend. Solo se usa en el servidor. |
 
-Ver `.env.example`. Hacen falta en el build (prerender de la portada) y en
-ejecución.
+Ver `.env.example`. Solo hacen falta en ejecución: el build no llama al
+backend.
 
 ## Desarrollo
 
@@ -29,5 +29,5 @@ pnpm dev          # http://localhost:3100
 
 ## Contenedor
 
-`Dockerfile` en la raíz. Escucha en el **3100**. Pasar las dos variables como
-build args y como variables de entorno.
+`Dockerfile` en la raíz. Escucha en el **3100**. Las dos variables van como
+variables de entorno del contenedor; no hacen falta build args.

@@ -11,13 +11,9 @@ RUN pnpm install --frozen-lockfile
 
 FROM deps AS builder
 COPY . .
-# El build prerenderiza la portada con datos del backend. Sin estas variables
-# compila igual (la marca cae a la de por defecto) y se refresca al minuto.
-ARG SAMAWE_API_URL
-ARG SAMAWE_API_CLIENT_KEY
-ENV SAMAWE_API_URL=$SAMAWE_API_URL \
-    SAMAWE_API_CLIENT_KEY=$SAMAWE_API_CLIENT_KEY \
-    NEXT_TELEMETRY_DISABLED=1
+# El build NO necesita el backend ni sus variables: el catálogo se arma al
+# atender cada visita. La marca del shell estático se refresca al minuto.
+ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm build
 
 FROM base AS production
@@ -28,5 +24,5 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/next.config.ts ./
 EXPOSE 3100
-# SAMAWE_API_URL y SAMAWE_API_CLIENT_KEY también hacen falta en tiempo de ejecución.
+# SAMAWE_API_URL y SAMAWE_API_CLIENT_KEY: variables de entorno del contenedor (solo en ejecución).
 CMD ["pnpm", "start"]
