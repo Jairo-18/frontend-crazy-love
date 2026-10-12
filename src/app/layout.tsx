@@ -19,7 +19,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: { default: t(branding?.metaTitle, name), template: `%s | ${name}` },
     description: t(branding?.metaDescription, t(branding?.description)),
-    icons: logo ? { icon: logo } : undefined,
+    // El ícono de la pestaña (y el de iPhone) es el logo del hotel, del backend.
+    // Sin `src/app/favicon.ico`: Next le daba prioridad y salía el de Next.
+    icons: logo ? { icon: logo, shortcut: logo, apple: logo } : undefined,
   };
 }
 
