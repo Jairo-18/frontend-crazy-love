@@ -1,6 +1,13 @@
 import type { Branding } from '@/lib/types';
 import { whatsappUrl } from '@/lib/format';
 
+/**
+ * Panel de administración (el de samawe, uno solo para todos los hoteles). El
+ * `?hotel=` le dice al login en qué hotel buscar la cuenta y con qué marca
+ * mostrarse.
+ */
+const PANEL_URL = (process.env.SAMAWE_PANEL_URL ?? 'https://ecohotelsamawe.com').replace(/\/+$/, '');
+
 export function SiteFooter({ branding }: { branding: Branding | null }) {
   if (!branding) return null;
   const whatsapp = whatsappUrl(branding);
@@ -46,6 +53,15 @@ export function SiteFooter({ branding }: { branding: Branding | null }) {
             </li>
           ))}
         </ul>
+      </div>
+      <div className="mx-auto max-w-6xl px-4 pb-6 text-right text-xs opacity-70">
+        <a
+          href={`${PANEL_URL}/es/auth/login?hotel=${encodeURIComponent(branding.slug)}`}
+          className="underline-offset-2 hover:underline hover:opacity-100"
+          rel="nofollow"
+        >
+          Acceso administradores
+        </a>
       </div>
     </footer>
   );

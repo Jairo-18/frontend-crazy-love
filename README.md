@@ -16,6 +16,7 @@ Samawe.
 |---|---|
 | `SAMAWE_API_URL` | Backend con host de Crazy Love. Local: `http://127.0.0.2:3000`. |
 | `SAMAWE_API_CLIENT_KEY` | Cabecera `X-Client-Key` del backend. Solo se usa en el servidor. |
+| `SAMAWE_PANEL_URL` | Opcional. Panel de administración al que lleva "Acceso administradores" (por defecto `https://ecohotelsamawe.com`). |
 
 Ver `.env.example`. Solo hacen falta en ejecución: el build no llama al
 backend.
