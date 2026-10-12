@@ -19,9 +19,15 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: { default: t(branding?.metaTitle, name), template: `%s | ${name}` },
     description: t(branding?.metaDescription, t(branding?.description)),
-    // El ícono de la pestaña (y el de iPhone) es el logo del hotel, del backend.
-    // Sin `src/app/favicon.ico`: Next le daba prioridad y salía el de Next.
-    icons: logo ? { icon: logo, shortcut: logo, apple: logo } : undefined,
+    // Pestaña: `/brand-icon`, el logo del hotel en círculo, resuelto en cada
+    // visita (esta metadata se arma en el build, sin backend: con la URL del
+    // logo aquí quedaba sin ícono y salía el globo gris). iPhone no acepta SVG:
+    // el logo tal cual.
+    icons: {
+      icon: [{ url: '/brand-icon', type: 'image/svg+xml' }],
+      shortcut: '/brand-icon',
+      ...(logo && { apple: logo }),
+    },
   };
 }
 
