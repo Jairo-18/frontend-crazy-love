@@ -106,3 +106,35 @@ export async function getAccommodation(id: number): Promise<Accommodation> {
   cacheLife('minutes');
   return (await apiGet<{ data: Accommodation }>(`accommodation/public/${id}`)).data;
 }
+
+/** Todas las páginas de un listado público (el backend da 50 por página). */
+async function apiGetAll<T>(path: string): Promise<T[]> {
+  const out: T[] = [];
+  for (let page = 1; page <= 20; page++) {
+    const res = await apiGet<Paginated<T>>(path, { page, perPage: 50 });
+    out.push(...res.data);
+    if (!res.pagination?.hasNextPage) break;
+  }
+  return out;
+}
+
+export interface FullCatalog {
+  accommodations: Accommodation[];
+  services: CatalogItem[];
+  products: CatalogItem[];
+}
+
+/**
+ * TODO lo que ofrece el hotel, para la página de una sola pantalla (la del
+ * QR): habitaciones con sus tarifas, servicios y la carta completa.
+ */
+export async function getCatalog(): Promise<FullCatalog> {
+  'use cache';
+  cacheLife('minutes');
+  const [accommodations, services, products] = await Promise.all([
+    apiGetAll<Accommodation>('accommodation/public/list'),
+    apiGetAll<CatalogItem>('excursion/public/list'),
+    apiGetAll<CatalogItem>('product/public/list'),
+  ]);
+  return { accommodations, services, products };
+}

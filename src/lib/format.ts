@@ -50,6 +50,14 @@ export function whatsappUrl(branding: Branding | null): string | null {
   return `https://wa.me/${phone.startsWith(code) ? phone : code + phone}`;
 }
 
+/** `tel:` del hotel, para llamar desde el celular. */
+export function phoneHref(branding: Branding | null): string | null {
+  const phone = branding?.phone?.replace(/\D/g, '');
+  if (!phone) return null;
+  const code = (branding?.phoneCode?.code ?? '+57').replace(/\D/g, '');
+  return `tel:+${phone.startsWith(code) ? phone : code + phone}`;
+}
+
 /** Props de precio para la tarjeta de un hospedaje: "Desde $60.000 · 4 horas · hasta 2 personas". */
 export function accommodationPrice(a: {
   priceSale: number;

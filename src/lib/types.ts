@@ -91,6 +91,11 @@ export interface Branding {
   subtitleColor?: string;
   bgPrimaryColor?: string;
   bgSecondaryColor?: string;
+  darkTitleColor?: string;
+  darkSubtitleColor?: string;
+  darkTextColor?: string;
+  darkBgPrimaryColor?: string;
+  darkBgSecondaryColor?: string;
   homeTitle?: Translated;
   homeDescription?: Translated;
   accommodationsTitle?: Translated;

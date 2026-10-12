@@ -14,6 +14,23 @@
   --surface: #ffffff;
   --surface-2: #f6f3f5;
   --page: #fbf9fa;
+  --accent: #d4af37;
+  /* Precios: el dorado del hotel, oscurecido en claro para que se lea
+     (el dorado puro sobre fondo claro queda en ~2:1 de contraste). */
+  --price: color-mix(in srgb, var(--accent) 62%, black);
+}
+
+/* Oscuro por defecto: el layout lo pisa con los colores oscuros del hotel. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --title: #e6e8eb;
+    --text: #d3d6da;
+    --muted: #9aa3ad;
+    --surface: #1c2128;
+    --surface-2: #232a33;
+    --page: #110d10;
+    --price: var(--accent);
+  }
 }
 
 @theme inline {
@@ -21,6 +38,60 @@
   --color-foreground: var(--text);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-playfair);
+}
+
+/* Títulos con la serifa de la marca. */
+.font-display {
+  font-family: var(--font-playfair), Georgia, serif;
+  letter-spacing: -0.01em;
+}
+
+/* Carta: puntos guía entre el nombre y el precio, como en un menú impreso. */
+.menu-leader {
+  flex: 1 1 auto;
+  min-width: 1.5rem;
+  margin: 0 0.5rem 0.3rem;
+  border-bottom: 1px dotted color-mix(in srgb, var(--muted) 55%, transparent);
+}
+
+/* Pastillas de la barra de secciones. */
+.nav-chip {
+  flex: none;
+  border-radius: 9999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--title);
+  background: var(--surface-2);
+  transition: background-color 0.15s, color 0.15s;
+}
+.nav-chip:hover,
+.nav-chip:focus-visible {
+  background: var(--brand);
+  color: #fff;
+}
+
+/* La portada sale a todo el ancho con `w-screen`: sin esto, la barra de
+   desplazamiento vertical del escritorio daba scroll horizontal. */
+body {
+  overflow-x: clip;
+}
+
+/* Línea dorada de detalle (el terciario del hotel). */
+.gold-rule {
+  height: 1px;
+  width: 4rem;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
