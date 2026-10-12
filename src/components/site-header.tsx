@@ -18,7 +18,7 @@ export function SiteHeader({ branding }: { branding: Branding | null }) {
         <Link href="/" className="flex min-w-0 items-center gap-3">
           {logo ? (
             // eslint-disable-next-line @next/next/no-img-element -- las imágenes vienen del backend (host variable por entorno)
-            <img src={logo} alt={name} className="h-10 w-10 shrink-0 rounded-lg object-contain" />
+            <img src={logo} alt={name} className="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-black/10" />
           ) : null}
           <span className="font-display truncate text-lg font-semibold text-[var(--title)]">{name}</span>
         </Link>

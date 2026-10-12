@@ -37,7 +37,7 @@ export default async function Home() {
         <div className="relative mx-auto w-full max-w-6xl px-4 pb-12 pt-24 text-white">
           {logo ? (
             // eslint-disable-next-line @next/next/no-img-element -- imágenes del backend
-            <img src={logo} alt={name} className="mb-5 h-16 w-16 rounded-2xl object-contain ring-1 ring-white/20" />
+            <img src={logo} alt={name} className="mb-5 h-16 w-16 rounded-full object-cover ring-2 ring-white/30" />
           ) : null}
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--accent)]">Bienvenido</p>
           <h1 className="font-display mt-2 max-w-2xl text-4xl font-semibold leading-[1.05] sm:text-6xl">{title}</h1>
