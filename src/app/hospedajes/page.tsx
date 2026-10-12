@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { getAccommodations } from '@/lib/api';
-import { t } from '@/lib/format';
+import { accommodationPrice, t } from '@/lib/format';
 import { EmptyState, GridSkeleton, ItemCard, ItemGrid } from '@/components/item-card';
 import { PaginationNav, pageFrom } from '@/components/catalog-controls';
 
@@ -21,8 +21,7 @@ async function Results({ searchParams }: { searchParams: PageProps<'/hospedajes'
             title={t(a.name)}
             image={a.images[0]?.imageUrl}
             category={t(a.categoryType?.name)}
-            price={a.priceSale}
-            detail={a.amountBathroom ? `Hasta ${a.amountBathroom} personas` : undefined}
+            {...accommodationPrice(a)}
           />
         ))}
       </ItemGrid>

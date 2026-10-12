@@ -34,6 +34,11 @@ export interface CatalogItem {
 }
 
 /** Hospedaje del catálogo público (`/accommodation/public`). */
+export interface AccommodationRate {
+  hours: number;
+  price: number;
+}
+
 export interface Accommodation {
   accommodationId: number;
   code?: string;
@@ -46,6 +51,10 @@ export interface Accommodation {
   jacuzzi: boolean;
   priceSale: number;
   extraPersonPrice?: number;
+  hasMotorcycleParking?: boolean;
+  hasCarParking?: boolean;
+  /** Tarifas por horas de estadía, ordenadas por horas (Crazy Love: 4, 8, 12…). */
+  rates?: AccommodationRate[];
   categoryType: CategoryType | null;
   bedType: { bedTypeId: number; code: string; name: Translated } | null;
   stateType: { stateTypeId: number; code: string; name: Translated } | null;

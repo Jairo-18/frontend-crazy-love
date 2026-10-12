@@ -16,6 +16,24 @@ export function formatCop(value: number | string | null | undefined): string {
   return COP.format(Number(value ?? 0));
 }
 
+export function hoursLabel(hours: number): string {
+  return `${hours} hora${hours === 1 ? '' : 's'}`;
+}
+
+/**
+ * Precio a mostrar en una tarjeta de hospedaje: la tarifa más barata, con sus
+ * horas. Sin tarifas (no debería pasar) cae al `priceSale`, que es la de 24 h.
+ */
+export function startingRate(a: {
+  priceSale: number;
+  rates?: { hours: number; price: number }[];
+}): { price: number; hours: number; several: boolean } {
+  const rates = a.rates ?? [];
+  if (!rates.length) return { price: Number(a.priceSale), hours: 24, several: false };
+  const cheapest = rates.reduce((min, r) => (Number(r.price) < Number(min.price) ? r : min));
+  return { price: Number(cheapest.price), hours: cheapest.hours, several: rates.length > 1 };
+}
+
 /** Imagen de la marca por código de ranura (`LOGO`, `HOME_BG`, …), la activa de mayor prioridad. */
 export function mediaUrl(branding: Branding | null, code: string): string | null {
   const found = (branding?.medias ?? [])
@@ -30,4 +48,19 @@ export function whatsappUrl(branding: Branding | null): string | null {
   if (!phone) return null;
   const code = (branding?.phoneCode?.code ?? '+57').replace(/\D/g, '');
   return `https://wa.me/${phone.startsWith(code) ? phone : code + phone}`;
+}
+
+/** Props de precio para la tarjeta de un hospedaje: "Desde $60.000 · 4 horas · hasta 2 personas". */
+export function accommodationPrice(a: {
+  priceSale: number;
+  amountBathroom?: number;
+  rates?: { hours: number; price: number }[];
+}): { price: number; pricePrefix?: string; detail: string } {
+  const r = startingRate(a);
+  const people = a.amountBathroom ? ` · hasta ${a.amountBathroom} personas` : '';
+  return {
+    price: r.price,
+    pricePrefix: r.several ? 'Desde' : undefined,
+    detail: `${hoursLabel(r.hours)}${people}`,
+  };
 }

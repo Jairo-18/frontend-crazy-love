@@ -7,11 +7,13 @@ export interface ItemCardProps {
   image?: string | null;
   category?: string;
   price: number;
+  /** Antes del precio, p. ej. "Desde" cuando hay varias tarifas. */
+  pricePrefix?: string;
   /** Texto bajo el precio, p. ej. "por noche" o "hasta 4 personas". */
   detail?: string;
 }
 
-export function ItemCard({ href, title, image, category, price, detail }: ItemCardProps) {
+export function ItemCard({ href, title, image, category, price, pricePrefix, detail }: ItemCardProps) {
   return (
     <Link
       href={href}
@@ -38,7 +40,12 @@ export function ItemCard({ href, title, image, category, price, detail }: ItemCa
         ) : null}
         <h3 className="font-semibold leading-snug text-[var(--title)]">{title}</h3>
         <div className="mt-auto pt-2">
-          <p className="text-lg font-bold text-[var(--title)]">{formatCop(price)}</p>
+          <p className="text-lg font-bold text-[var(--title)]">
+            {pricePrefix ? (
+              <span className="mr-1 text-sm font-normal text-[var(--muted)]">{pricePrefix}</span>
+            ) : null}
+            {formatCop(price)}
+          </p>
           {detail ? <p className="text-xs text-[var(--muted)]">{detail}</p> : null}
         </div>
       </div>

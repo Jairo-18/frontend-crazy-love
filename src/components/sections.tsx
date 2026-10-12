@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { connection } from 'next/server';
 import { getAccommodations, getProducts, getServices } from '@/lib/api';
-import { t } from '@/lib/format';
+import { accommodationPrice, t } from '@/lib/format';
 import { EmptyState, ItemCard, ItemGrid } from './item-card';
 
 /**
@@ -40,8 +40,7 @@ export async function FeaturedAccommodations() {
               title={t(a.name)}
               image={a.images[0]?.imageUrl}
               category={t(a.categoryType?.name)}
-              price={a.priceSale}
-              detail={a.amountBathroom ? `Hasta ${a.amountBathroom} personas` : undefined}
+              {...accommodationPrice(a)}
             />
           ))}
         </ItemGrid>

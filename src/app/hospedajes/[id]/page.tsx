@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { ApiError, getAccommodation } from '@/lib/api';
-import { formatCop, t } from '@/lib/format';
+import { formatCop, hoursLabel, startingRate, t } from '@/lib/format';
 import { idFrom } from '@/components/catalog-page';
 import { Gallery } from '@/components/gallery';
 
@@ -29,7 +29,11 @@ async function Detail({ params }: { params: PageProps<'/hospedajes/[id]'>['param
     a.amountRoom ? `${a.amountRoom} habitación${a.amountRoom === 1 ? '' : 'es'}` : null,
     a.bedType ? `Cama ${t(a.bedType.name).toLowerCase()}` : null,
     a.jacuzzi ? 'Jacuzzi' : null,
+    a.hasCarParking ? 'Parqueadero de carro' : null,
+    a.hasMotorcycleParking ? 'Parqueadero de moto' : null,
   ].filter(Boolean) as string[];
+  const rates = a.rates ?? [];
+  const from = startingRate(a);
 
   return (
     <article className="grid gap-8 md:grid-cols-2">
@@ -42,11 +46,28 @@ async function Detail({ params }: { params: PageProps<'/hospedajes/[id]'>['param
         ) : null}
         <h1 className="text-3xl font-extrabold text-[var(--title)]">{name}</h1>
         <p className="text-2xl font-bold text-[var(--title)]">
-          {formatCop(a.priceSale)} <span className="text-sm font-normal text-[var(--muted)]">por noche</span>
+          {from.several ? <span className="mr-1 text-sm font-normal text-[var(--muted)]">Desde</span> : null}
+          {formatCop(from.price)}{' '}
+          <span className="text-sm font-normal text-[var(--muted)]">por {hoursLabel(from.hours)}</span>
         </p>
-        {a.extraPersonPrice ? (
+        {rates.length > 1 ? (
+          <table className="w-full max-w-sm overflow-hidden rounded-xl text-sm ring-1 ring-black/5">
+            <caption className="mb-2 text-left font-semibold text-[var(--title)]">Tarifas</caption>
+            <tbody>
+              {rates.map((r) => (
+                <tr key={r.hours} className="odd:bg-[var(--surface-2)]">
+                  <th scope="row" className="px-3 py-2 text-left font-normal">
+                    {hoursLabel(r.hours)}
+                  </th>
+                  <td className="px-3 py-2 text-right font-semibold">{formatCop(r.price)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : null}
+        {Number(a.extraPersonPrice) > 0 ? (
           <p className="text-sm text-[var(--muted)]">
-            Persona adicional: {formatCop(a.extraPersonPrice)} por noche
+            Persona adicional: {formatCop(a.extraPersonPrice)}
           </p>
         ) : null}
         {facts.length ? (
