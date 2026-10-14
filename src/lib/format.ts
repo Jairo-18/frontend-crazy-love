@@ -72,3 +72,27 @@ export function accommodationPrice(a: {
     detail: `${hoursLabel(r.hours)}${people}`,
   };
 }
+
+/** Ancla de una categoría de la carta: `#carta-bar`, `#carta-mec`… */
+export const categoryAnchor = (code: string) => `carta-${code.toLowerCase()}`;
+
+/** Los nombres de categoría llegan en mayúsculas ("MECATO"): se muestran como título. */
+export const titleCase = (s: string) => s.toLowerCase().replace(/(^|\s)\p{L}/gu, (c) => c.toUpperCase());
+
+/** Para buscar sin que importen tildes ni mayúsculas: "Águila" = "aguila". */
+export const foldText = (s: string) =>
+  s
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .toLowerCase();
+
+/** Precio por hora de una tarifa, redondeado a la centena: para comparar tiempos. */
+export function perHour(price: number | string, hours: number): number {
+  return Math.round(Number(price) / Math.max(hours, 1) / 100) * 100;
+}
+
+/** Tarifa de una habitación para tantas horas, o `null` si no la tiene. */
+export function rateFor(a: { rates?: { hours: number; price: number }[] }, hours: number): number | null {
+  const r = a.rates?.find((x) => x.hours === hours);
+  return r ? Number(r.price) : null;
+}

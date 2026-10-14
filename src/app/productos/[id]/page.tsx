@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { CatalogDetail, idFrom, loadCatalogItem } from '@/components/catalog-page';
 import { t } from '@/lib/format';
+import { DetailSkeleton } from '@/components/detail';
 
 export async function generateMetadata({ params }: PageProps<'/productos/[id]'>): Promise<Metadata> {
   const { id } = await params;
@@ -11,7 +12,7 @@ export async function generateMetadata({ params }: PageProps<'/productos/[id]'>)
 
 export default function Page({ params }: PageProps<'/productos/[id]'>) {
   return (
-    <Suspense fallback={<div className="h-96 animate-pulse rounded-2xl bg-[var(--surface-2)]" />}>
+    <Suspense fallback={<DetailSkeleton />}>
       <CatalogDetail kind="productos" params={params} />
     </Suspense>
   );
